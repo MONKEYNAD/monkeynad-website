@@ -4,15 +4,20 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MONKEYNAD – The Primate Protocol of MONAD</title>
+  <meta name="description" content="MONKEYNAD – The Primate Protocol of MONAD. The jungle-native memecoin evolving on the MONAD chain." />
   <style>
     :root {
-      --bg-dark: #050509;
-      --card-dark: #111219;
+      --bg-dark: #03040a;
+      --bg-card: #0b0d18;
+      --bg-card-soft: #111425;
       --accent: #ffc857;
       --accent-strong: #ff7a1a;
+      --accent-teal: #35f0d0;
       --text-main: #ffffff;
-      --text-soft: #c5c7d3;
-      --border-glow: rgba(255, 200, 87, 0.5);
+      --text-soft: #c7cadc;
+      --border-soft: rgba(255, 255, 255, 0.06);
+      --shadow-strong: 0 0 40px rgba(0, 0, 0, 0.85);
+      --radius-xl: 22px;
     }
 
     * {
@@ -21,339 +26,965 @@
       padding: 0;
     }
 
+    html, body {
+      scroll-behavior: smooth;
+    }
+
     body {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       background:
-        radial-gradient(circle at 0% 0%, #1c1a33 0, transparent 55%),
-        radial-gradient(circle at 100% 0%, #2a1829 0, transparent 55%),
-        radial-gradient(circle at 50% 100%, #081f2b 0, transparent 55%),
+        radial-gradient(circle at 10% 0%, #1a1833 0, transparent 60%),
+        radial-gradient(circle at 90% 0%, #2a1730 0, transparent 55%),
+        radial-gradient(circle at 50% 100%, #041f2c 0, transparent 55%),
         var(--bg-dark);
       color: var(--text-main);
       min-height: 100vh;
     }
 
     .page {
-      max-width: 1080px;
+      max-width: 1120px;
       margin: 0 auto;
-      padding: 24px 16px 64px;
+      padding: 20px 16px 64px;
     }
 
-    header {
-      text-align: center;
-      padding: 40px 12px 32px;
+    /* NAVBAR */
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: linear-gradient(
+          120deg,
+          rgba(255, 200, 87, 0.12),
+          rgba(53, 240, 208, 0.03),
+          rgba(9, 9, 22, 0.95)
+        );
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      box-shadow: 0 0 24px rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(16px);
+      position: sticky;
+      top: 10px;
+      z-index: 10;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 16px;
+      object-fit: cover;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      box-shadow: 0 0 14px rgba(255, 200, 87, 0.4);
+    }
+
+    .nav-title {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.1;
+    }
+
+    .nav-title-main {
+      font-size: 1rem;
+      font-weight: 650;
+      letter-spacing: 0.06em;
+    }
+
+    .nav-title-sub {
+      font-size: 0.72rem;
+      opacity: 0.7;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.82rem;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text-soft);
+      opacity: 0.8;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      transition: all 0.15s ease;
+    }
+
+    .nav-links a:hover {
+      opacity: 1;
+      border-color: rgba(255, 255, 255, 0.12);
+      background: rgba(10, 14, 40, 0.7);
+    }
+
+    .nav-cta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-pill {
+      border-radius: 999px;
+      padding: 7px 16px;
+      font-size: 0.8rem;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: rgba(5, 7, 24, 0.9);
+      color: var(--text-main);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      text-decoration: none;
+      box-shadow: 0 0 16px rgba(0, 0, 0, 0.5);
+      transition: all 0.16s ease-out;
+    }
+
+    .btn-pill span.icon {
+      font-size: 1rem;
+    }
+
+    .btn-pill-accent {
+      border-color: rgba(255, 200, 87, 0.7);
+      background: linear-gradient(135deg, #ffc857, #ff7a1a);
+      color: #1a1200;
+      font-weight: 600;
+      box-shadow: 0 0 26px rgba(255, 166, 66, 0.7);
+    }
+
+    .btn-pill:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 0 22px rgba(0, 0, 0, 0.75);
+      opacity: 0.96;
+    }
+
+    .btn-pill-accent:hover {
+      box-shadow: 0 0 32px rgba(255, 166, 66, 0.9);
+    }
+
+    /* HERO */
+    header.hero {
       position: relative;
+      padding: 46px 10px 32px;
+      text-align: center;
       overflow: hidden;
+      margin-top: 22px;
     }
 
-    header::before {
+    header.hero::before {
       content: "";
       position: absolute;
-      inset: -40%;
+      inset: -20%;
       background:
-        radial-gradient(circle at 15% 20%, rgba(255, 200, 87, 0.12), transparent 60%),
-        radial-gradient(circle at 85% 15%, rgba(104, 216, 255, 0.1), transparent 60%),
-        radial-gradient(circle at 50% 100%, rgba(255, 122, 26, 0.18), transparent 60%);
-      opacity: 0.85;
-      z-index: -1;
+        radial-gradient(circle at 15% 0%, rgba(255, 200, 87, 0.18), transparent 60%),
+        radial-gradient(circle at 85% 10%, rgba(53, 240, 208, 0.16), transparent 60%),
+        radial-gradient(circle at 50% 100%, rgba(255, 122, 26, 0.22), transparent 65%);
+      opacity: 0.9;
       filter: blur(4px);
-      animation: slowGlow 16s ease-in-out infinite alternate;
+      animation: slowGlow 26s ease-in-out infinite alternate;
+      z-index: -2;
+    }
+
+    header.hero::after {
+      content: "";
+      position: absolute;
+      inset: 15%;
+      border-radius: 40%;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      opacity: 0.25;
+      filter: blur(2px);
+      mix-blend-mode: screen;
+      animation: orbitLines 32s linear infinite;
+      z-index: -1;
     }
 
     @keyframes slowGlow {
       0% { transform: scale(1); opacity: 0.8; }
-      100% { transform: scale(1.12); opacity: 1; }
+      100% { transform: scale(1.15); opacity: 1; }
     }
 
-    .logo {
-      width: 160px;
-      height: 160px;
-      border-radius: 24px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      box-shadow: 0 0 25px rgba(0, 0, 0, 0.8), 0 0 38px rgba(255, 200, 87, 0.32);
-      object-fit: cover;
+    @keyframes orbitLines {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .hero-inner {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 26px 16px 32px;
+      border-radius: 32px;
+      background: radial-gradient(circle at 20% 0%, rgba(255,255,255,0.06), transparent 60%),
+                  radial-gradient(circle at 80% 100%, rgba(0, 255, 180, 0.04), transparent 60%),
+                  rgba(6, 8, 26, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: var(--shadow-strong);
+      backdrop-filter: blur(20px);
+    }
+
+    .hero-logo-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
       margin-bottom: 24px;
     }
 
-    .eyebrow {
-      font-size: 0.9rem;
-      letter-spacing: 0.2em;
+    .logo-main {
+      width: 170px;
+      height: 170px;
+      border-radius: 28px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      box-shadow:
+        0 0 26px rgba(0, 0, 0, 0.9),
+        0 0 42px rgba(255, 200, 87, 0.5),
+        0 0 70px rgba(53, 240, 208, 0.25);
+      object-fit: cover;
+      animation: floatUp 4.6s ease-in-out infinite alternate;
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(0px); }
+      100% { transform: translateY(-8px); }
+    }
+
+    .hero-eyebrow {
+      font-size: 0.82rem;
       text-transform: uppercase;
-      color: var(--accent);
+      letter-spacing: 0.18em;
+      color: var(--accent-teal);
+      opacity: 0.9;
+    }
+
+    .hero-title {
+      font-size: clamp(2.2rem, 4vw, 3rem);
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
       margin-bottom: 10px;
     }
 
-    h1 {
-      font-size: clamp(2.6rem, 6vw, 3.4rem);
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      margin-bottom: 12px;
-    }
-
-    .subtitle {
-      font-size: 1.1rem;
-      color: var(--text-soft);
-      max-width: 520px;
-      margin: 0 auto 20px;
-    }
-
-    .hero-highlight {
+    .hero-subtitle {
       font-size: 1rem;
-      color: var(--accent);
-      max-width: 520px;
-      margin: 0 auto 28px;
-    }
-
-    .hero-cta {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 12px;
+      opacity: 0.8;
       margin-bottom: 16px;
     }
 
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 10px 22px;
+    .hero-tagline {
+      max-width: 560px;
+      margin: 0 auto 22px;
       font-size: 0.98rem;
-      font-weight: 600;
-      border-radius: 999px;
-      text-decoration: none;
-      cursor: pointer;
-      border: 1px solid transparent;
-      transition: all 0.18s ease-out;
-      gap: 8px;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, var(--accent-strong), var(--accent));
-      color: #000;
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6), 0 0 20px rgba(255, 200, 87, 0.5);
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-1px) scale(1.02);
-      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.8), 0 0 26px rgba(255, 200, 87, 0.8);
-      filter: brightness(1.05);
-    }
-
-    .btn-secondary {
-      background: rgba(12, 14, 24, 0.9);
-      border-color: rgba(255, 255, 255, 0.16);
       color: var(--text-soft);
     }
 
-    .btn-secondary:hover {
-      border-color: var(--accent);
+    .hero-highlight {
       color: var(--accent);
-      background: rgba(10, 10, 16, 0.95);
-      transform: translateY(-1px);
+      font-weight: 600;
+    }
+
+    .hero-cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 18px;
     }
 
     .hero-note {
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       color: var(--text-soft);
-      opacity: 0.85;
+      opacity: 0.8;
     }
 
-    section {
-      margin-top: 32px;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1.4fr);
-      gap: 22px;
-      align-items: flex-start;
-      margin-top: 10px;
-    }
-
-    @media (max-width: 800px) {
-      .grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .card {
-      background: radial-gradient(circle at top left, rgba(255, 200, 87, 0.12), transparent 60%), var(--card-dark);
-      border-radius: 20px;
-      padding: 22px 20px;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      box-shadow:
-        0 18px 40px rgba(0, 0, 0, 0.7),
-        0 0 0 1px rgba(255, 255, 255, 0.02);
-      backdrop-filter: blur(10px);
-    }
-
-    .card h2 {
-      font-size: 1.3rem;
-      margin-bottom: 10px;
-    }
-
-    .card p {
-      font-size: 0.96rem;
-      color: var(--text-soft);
-      line-height: 1.6;
-    }
-
-    .badge-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 12px;
-    }
-
-    .badge {
-      font-size: 0.78rem;
-      padding: 4px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      color: var(--text-soft);
-      background: rgba(7, 9, 17, 0.9);
-    }
-
-    .tokenomics-list,
-    .roadmap-list,
-    .hook-list {
-      list-style: none;
-      margin-top: 10px;
-      display: grid;
-      gap: 6px;
-      font-size: 0.94rem;
-      color: var(--text-soft);
-    }
-
-    .tokenomics-list li::before,
-    .roadmap-list li::before,
-    .hook-list li::before {
-      content: "✦";
+    .hero-note span {
       color: var(--accent);
-      margin-right: 6px;
+    }
+
+    /* SECTIONS */
+    section {
+      margin-top: 42px;
+    }
+
+    .section-label {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--accent-teal);
+      opacity: 0.9;
+      margin-bottom: 8px;
     }
 
     .section-title {
-      font-size: 1.2rem;
-      margin-bottom: 6px;
+      font-size: 1.4rem;
+      margin-bottom: 10px;
     }
 
-    .section-sub {
-      font-size: 0.92rem;
+    .section-desc {
+      font-size: 0.95rem;
+      color: var(--text-soft);
+      max-width: 640px;
+      margin-bottom: 18px;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .card {
+      background: linear-gradient(145deg, var(--bg-card), var(--bg-card-soft));
+      border-radius: var(--radius-xl);
+      padding: 16px 16px 14px;
+      border: 1px solid var(--border-soft);
+      box-shadow: 0 0 22px rgba(0, 0, 0, 0.65);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: -30%;
+      background: radial-gradient(circle at 0% 0%, rgba(255, 200, 87, 0.16), transparent 65%);
+      opacity: 0;
+      transition: opacity 0.25s ease-out;
+    }
+
+    .card:hover::before {
+      opacity: 1;
+    }
+
+    .card-kicker {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: rgba(199, 202, 220, 0.9);
+      margin-bottom: 6px;
+      opacity: 0.9;
+    }
+
+    .card-title {
+      font-size: 1rem;
+      margin-bottom: 4px;
+      font-weight: 600;
+    }
+
+    .card-text {
+      font-size: 0.9rem;
       color: var(--text-soft);
     }
 
-    .footer {
-      margin-top: 42px;
-      padding-top: 22px;
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
-      font-size: 0.82rem;
-      color: #8b8e9b;
-      text-align: center;
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.78rem;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      background: rgba(7, 9, 25, 0.9);
+      margin-bottom: 8px;
+      color: var(--text-soft);
     }
 
-    .mono-accent {
+    .pill-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: var(--accent);
+    }
+
+    /* TOKENOMICS */
+    .tokenomics-grid {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .tokenomics-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .token-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: rgba(7, 9, 25, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      font-size: 0.9rem;
+    }
+
+    .token-row-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .token-row-badge {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--accent);
+    }
+
+    .token-row span.percent {
+      font-weight: 600;
       color: var(--accent);
+    }
+
+    .token-box {
+      border-radius: var(--radius-xl);
+      background: radial-gradient(circle at 0 0, rgba(255, 200, 87, 0.16), transparent 65%),
+                  rgba(5, 8, 28, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      padding: 16px 14px 12px;
+      font-size: 0.9rem;
+      color: var(--text-soft);
+      box-shadow: 0 0 24px rgba(0, 0, 0, 0.8);
+    }
+
+    .token-box strong {
+      color: var(--accent);
+    }
+
+    /* ROADMAP */
+    .roadmap {
+      border-radius: var(--radius-xl);
+      background: rgba(7, 9, 25, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      padding: 16px 16px 10px;
+      box-shadow: 0 0 22px rgba(0, 0, 0, 0.75);
+    }
+
+    .roadmap-steps {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      font-size: 0.86rem;
+    }
+
+    .roadmap-step {
+      padding: 10px 10px 9px;
+      border-radius: 16px;
+      background: linear-gradient(145deg, #0a0d20, #151a32);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      position: relative;
+    }
+
+    .roadmap-step-label {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: rgba(199, 202, 220, 0.9);
+      margin-bottom: 4px;
+    }
+
+    .roadmap-step-title {
+      font-weight: 600;
+      margin-bottom: 3px;
+    }
+
+    .roadmap-step ul {
+      list-style: none;
+      padding-left: 0;
+      color: var(--text-soft);
+    }
+
+    .roadmap-step li::before {
+      content: "• ";
+      color: var(--accent);
+    }
+
+    /* HOW TO BUY + COMMUNITY */
+    .flex-2col {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .how-box,
+    .community-box {
+      border-radius: var(--radius-xl);
+      background: rgba(7, 9, 25, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      padding: 16px 16px 14px;
+      font-size: 0.9rem;
+      color: var(--text-soft);
+      box-shadow: 0 0 22px rgba(0, 0, 0, 0.7);
+    }
+
+    .how-box-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.78rem;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px dashed rgba(255, 200, 87, 0.7);
+      background: rgba(24, 15, 3, 0.8);
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+
+    .how-box ol {
+      padding-left: 18px;
+      margin-top: 6px;
+    }
+
+    .how-box li {
+      margin-bottom: 4px;
+    }
+
+    .community-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(6, 9, 26, 0.95);
+      font-size: 0.86rem;
+      text-decoration: none;
+      color: var(--text-soft);
+      transition: all 0.16s ease-out;
+    }
+
+    .chip span.icon {
+      font-size: 1rem;
+    }
+
+    .chip:hover {
+      border-color: rgba(255, 200, 87, 0.7);
+      color: var(--accent);
+      transform: translateY(-1px);
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.75);
+    }
+
+    /* FOOTER */
+    footer {
+      margin-top: 40px;
+      padding-top: 18px;
+      font-size: 0.8rem;
+      color: rgba(170, 174, 200, 0.85);
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 10px;
+      opacity: 0.92;
+    }
+
+    footer a {
+      color: inherit;
+      text-decoration: none;
+      opacity: 0.86;
+    }
+
+    footer a:hover {
+      opacity: 1;
+      text-decoration: underline;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 880px) {
+      .nav {
+        border-radius: 18px;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .hero-inner {
+        padding: 22px 16px 22px;
+      }
+
+      .card-grid,
+      .roadmap-steps {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .tokenomics-grid,
+      .flex-2col {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    @media (max-width: 620px) {
+      .page {
+        padding-inline: 12px;
+      }
+
+      .nav {
+        padding-inline: 12px;
+      }
+
+      .hero-title {
+        font-size: 1.9rem;
+      }
+
+      .card-grid,
+      .roadmap-steps {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .hero-logo-wrap {
+        margin-bottom: 18px;
+      }
+
+      .hero-tagline {
+        font-size: 0.92rem;
+      }
     }
   </style>
 </head>
 <body>
   <div class="page">
-    <header>
-      <img src="https://raw.githubusercontent.com/MONKEYNAD/monkeynad-assets/main/monkeynad.png" alt="MONKEYNAD Logo" class="logo" />
-      <div class="eyebrow">Evolution has reached MONAD</div>
-      <h1>MONKEYNAD</h1>
-      <p class="subtitle">The Primate Protocol of MONAD – where raw meme energy fuses with high-performance blockspace.</p>
-      <p class="hero-highlight">The jungle just upgraded to MONAD. Ride the evolution. Swing with the monkey. Climb with MONKEYNAD.</p>
-
-      <div class="hero-cta">
-        <a class="btn btn-primary" href="#buy">Buy $MNAD</a>
-        <a class="btn btn-secondary" href="#community">Join the Jungle</a>
+    <!-- NAVBAR -->
+    <nav class="nav">
+      <div class="nav-left">
+        <img
+          src="https://raw.githubusercontent.com/MONKEYNAD/monkeynad-assets/main/monkeynad.png"
+          alt="MONKEYNAD Logo"
+          class="nav-logo"
+        />
+        <div class="nav-title">
+          <span class="nav-title-main">$MNAD</span>
+          <span class="nav-title-sub">The Primate Protocol of MONAD</span>
+        </div>
       </div>
-      <div class="hero-note">Smart contract on MONAD · Community-driven · No promises, only pure degen fun.</div>
+      <div class="nav-links">
+        <a href="#about">About</a>
+        <a href="#tokenomics">Tokenomics</a>
+        <a href="#roadmap">Roadmap</a>
+        <a href="#community">Community</a>
+      </div>
+      <div class="nav-cta">
+        <a href="#how-to-buy" class="btn-pill">
+          <span class="icon">🦧</span>
+          How to buy
+        </a>
+        <a href="#community" class="btn-pill btn-pill-accent">
+          <span class="icon">⚡</span>
+          Join the Jungle
+        </a>
+      </div>
+    </nav>
+
+    <!-- HERO -->
+    <header class="hero">
+      <div class="hero-inner">
+        <div class="hero-logo-wrap">
+          <img
+            src="https://raw.githubusercontent.com/MONKEYNAD/monkeynad-assets/main/monkeynad.png"
+            alt="MONKEYNAD Logo"
+            class="logo-main"
+          />
+          <div class="hero-eyebrow">EVOLUTION HAS REACHED MONAD</div>
+          <h1 class="hero-title">MONKEYNAD</h1>
+          <p class="hero-subtitle">The Primate Protocol of MONAD.</p>
+        </div>
+
+        <p class="hero-tagline">
+          A jungle-native memecoin evolving on the <span class="hero-highlight">MONAD</span> chain.
+          Fast, wild and built to swing with the next generation of high-performance blockchain
+          infrastructure.
+        </p>
+
+        <div class="hero-cta-row">
+          <a href="#how-to-buy" class="btn-pill btn-pill-accent">
+            <span class="icon">🦧</span>
+            Buy $MNAD <span>(soon)</span>
+          </a>
+          <a href="#community" class="btn-pill">
+            <span class="icon">🌴</span>
+            Join the jungle
+          </a>
+        </div>
+
+        <p class="hero-note">
+          <span>Ride the evolution.</span> Swing with the monkey. Climb with MONKEYNAD.
+        </p>
+      </div>
     </header>
 
+    <!-- ABOUT / WHY -->
     <section id="about">
-      <div class="grid">
+      <div class="section-label">About</div>
+      <h2 class="section-title">What is MONKEYNAD?</h2>
+      <p class="section-desc">
+        MONKEYNAD is the memecoin born for the MONAD ecosystem – a playful, high-energy asset
+        designed to become the unofficial mascot of a next-generation high-throughput chain.
+        Where serious performance meets serious degeneracy.
+      </p>
+
+      <div class="card-grid">
         <div class="card">
-          <h2>What is MONKEYNAD?</h2>
-          <p>
-            MONKEYNAD is the meme-powered primate protocol emerging from the MONAD blockchain – a fusion of speed,
-            scalability and jungle-grade chaos. It’s not just another coin; it’s a banner for the degen tribe of MONAD.
+          <div class="card-kicker">01 · Meme DNA</div>
+          <h3 class="card-title">The meme of MONAD</h3>
+          <p class="card-text">
+            Every chain gets the meme it deserves. MONKEYNAD aims to become the default primate
+            of MONAD – a recognizable, repeatable and shareable brand across CT and beyond.
           </p>
-          <ul class="hook-list">
-            <li>Born on MONAD, built for those who ape early.</li>
-            <li>Designed to be the loudest meme in the MONAD ecosystem.</li>
-            <li>Simple token, loud culture, maximum community.</li>
-          </ul>
-          <div class="badge-row">
-            <span class="badge">MONAD Native</span>
-            <span class="badge">Meme First</span>
-            <span class="badge">No VC · No Roadshow</span>
+        </div>
+        <div class="card">
+          <div class="card-kicker">02 · Native Energy</div>
+          <h3 class="card-title">Built for MONAD speed</h3>
+          <p class="card-text">
+            MONAD is engineered for low latency and high throughput. A fast chain deserves a
+            fast-moving meme: responsive, liquid and ready for high-frequency jungle swings.
+          </p>
+        </div>
+        <div class="card">
+          <div class="card-kicker">03 · Community First</div>
+          <h3 class="card-title">Jungle > everything</h3>
+          <p class="card-text">
+            MONKEYNAD is not just a ticker – it’s a jungle. Holders, builders and degenerates
+            aligned around one simple mission: make the primate protocol impossible to ignore.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- WHY MONAD -->
+    <section>
+      <div class="section-label">Why MONAD × Monkey</div>
+      <h2 class="section-title">Why MONKEYNAD belongs on MONAD</h2>
+      <p class="section-desc">
+        The name says it all: <strong>MONKEY</strong> + <strong>MONAD</strong>. A clean fusion
+        between meme culture and serious performance engineering. No forced narrative – just a
+        natural evolution.
+      </p>
+
+      <div class="card-grid">
+        <div class="card">
+          <span class="pill">
+            <span class="pill-dot"></span>
+            Native branding
+          </span>
+          <h3 class="card-title">Perfect name symmetry</h3>
+          <p class="card-text">
+            MONKEYNAD is designed to be instantly associated with MONAD. It’s phonetically sticky
+            and visually iconic – a ticker that reads like a punchline.
+          </p>
+        </div>
+        <div class="card">
+          <span class="pill">
+            <span class="pill-dot"></span>
+            Early positioning
+          </span>
+          <h3 class="card-title">First-mover primate</h3>
+          <p class="card-text">
+            While most memes wait for liquidity, MONKEYNAD focuses on narrative and identity early:
+            lore, visuals and messaging ready for day one.
+          </p>
+        </div>
+        <div class="card">
+          <span class="pill">
+            <span class="pill-dot"></span>
+            Story potential
+          </span>
+          <h3 class="card-title">The Primate Protocol</h3>
+          <p class="card-text">
+            “The Primate Protocol of MONAD” is not just a slogan – it’s a framework for future
+            drops, utilities and community experiments around the jungle metagame.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOKENOMICS -->
+    <section id="tokenomics">
+      <div class="section-label">Tokenomics</div>
+      <h2 class="section-title">$MNAD supply model</h2>
+      <p class="section-desc">
+        Exact numbers are subject to refinement before launch, but the guiding principle is simple:
+        <strong>fair, transparent and jungle-aligned tokenomics</strong> with clear allocations
+        and no hidden vines.
+      </p>
+
+      <div class="tokenomics-grid">
+        <div class="tokenomics-list">
+          <div class="token-row">
+            <div class="token-row-label">
+              <span class="token-row-badge"></span>
+              <span>Liquidity &amp; market</span>
+            </div>
+            <span class="percent">XX%</span>
+          </div>
+          <div class="token-row">
+            <div class="token-row-label">
+              <span class="token-row-badge"></span>
+              <span>Community &amp; incentives</span>
+            </div>
+            <span class="percent">XX%</span>
+          </div>
+          <div class="token-row">
+            <div class="token-row-label">
+              <span class="token-row-badge"></span>
+              <span>Team &amp; contributors</span>
+            </div>
+            <span class="percent">XX%</span>
+          </div>
+          <div class="token-row">
+            <div class="token-row-label">
+              <span class="token-row-badge"></span>
+              <span>Treasury &amp; future experiments</span>
+            </div>
+            <span class="percent">XX%</span>
           </div>
         </div>
 
-        <div class="card">
-          <h2>Why MONAD × Monkey?</h2>
+        <div class="token-box">
+          <strong>Note:</strong> tokenomics are placeholders while the jungle is being mapped.
+          Final supply, allocations and vesting details will be published transparently before
+          public launch, including:
+          <ul style="margin-top: 6px; padding-left: 16px;">
+            <li>Exact total supply of $MNAD</li>
+            <li>Liquidity strategy and lock parameters</li>
+            <li>Team and contributor vesting schedules</li>
+            <li>Budget for community incentives and cross-chain growth</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ROADMAP -->
+    <section id="roadmap">
+      <div class="section-label">Roadmap</div>
+      <h2 class="section-title">From monkey to protocol</h2>
+      <p class="section-desc">
+        MONKEYNAD is designed to grow with MONAD itself – starting as a pure meme, then evolving
+        into a protocol-level mascot and culture layer for the chain.
+      </p>
+
+      <div class="roadmap">
+        <div class="roadmap-steps">
+          <div class="roadmap-step">
+            <div class="roadmap-step-label">Phase 1</div>
+            <div class="roadmap-step-title">Jungle Awakening</div>
+            <ul>
+              <li>Brand, lore &amp; visuals</li>
+              <li>Website &amp; core narrative</li>
+              <li>Early community formation</li>
+            </ul>
+          </div>
+          <div class="roadmap-step">
+            <div class="roadmap-step-label">Phase 2</div>
+            <div class="roadmap-step-title">Launch Swing</div>
+            <ul>
+              <li>$MNAD token launch on MONAD</li>
+              <li>Initial liquidity and jungle LPs</li>
+              <li>Listing on trackers &amp; dashboards</li>
+            </ul>
+          </div>
+          <div class="roadmap-step">
+            <div class="roadmap-step-label">Phase 3</div>
+            <div class="roadmap-step-title">Primate Protocol</div>
+            <ul>
+              <li>On-chain experiments &amp; utilities</li>
+              <li>Collabs within MONAD ecosystem</li>
+              <li>Jungle quests &amp; holder perks</li>
+            </ul>
+          </div>
+          <div class="roadmap-step">
+            <div class="roadmap-step-label">Phase 4</div>
+            <div class="roadmap-step-title">Jungle Expansion</div>
+            <ul>
+              <li>Cross-ecosystem presence</li>
+              <li>Merch, art &amp; IRL moments</li>
+              <li>More monkeys, more chaos</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW TO BUY + COMMUNITY -->
+    <section id="how-to-buy">
+      <div class="section-label">Launch</div>
+      <h2 class="section-title">How to buy $MNAD (soon)</h2>
+      <div class="flex-2col">
+        <div class="how-box">
+          <div class="how-box-badge">
+            <span>⏳</span>
+            Launch details pending
+          </div>
           <p>
-            MONAD brings ultra-fast, low-latency blockspace. MONKEYNAD puts a screaming meme on top of it.
-            Evolution isn’t polite – it swings in, grabs liquidity and makes noise.
+            MONKEYNAD is preparing for its swing into the MONAD jungle. Once deployment details
+            are finalized, a full step-by-step buying guide will be published here.
           </p>
-          <ul class="tokenomics-list">
-            <li>MONAD performance, monkey personality.</li>
-            <li>Easy to remember, impossible to ignore.</li>
-            <li>The meme layer for a next-gen L1.</li>
-          </ul>
+          <ol>
+            <li>Get a wallet compatible with the MONAD ecosystem.</li>
+            <li>Bridge or acquire native assets on MONAD.</li>
+            <li>Use the official DEX link to swap for $MNAD.</li>
+            <li>Verify contract address from official channels only.</li>
+          </ol>
+          <p style="margin-top: 6px;">
+            Until then: join the community, follow the announcements and get ready for the first
+            major primate swing.
+          </p>
+        </div>
+        <div class="community-box" id="community">
+          <div class="section-label" style="margin-bottom: 4px;">Community</div>
+          <h3 class="section-title" style="font-size: 1.1rem; margin-bottom: 6px;">
+            Enter the jungle
+          </h3>
+          <p>
+            The real protocol is the primates you meet along the way. Stick close to the official
+            channels for launch info, contract details, memes and coordinated jungle raids.
+          </p>
+          <div class="community-links">
+            <!-- Replace # with real links when ready -->
+            <a href="#" class="chip">
+              <span class="icon">𝕏</span>
+              Official X (soon)
+            </a>
+            <a href="#" class="chip">
+              <span class="icon">💬</span>
+              Telegram jungle (soon)
+            </a>
+            <a href="#" class="chip">
+              <span class="icon">📢</span>
+              Announcements channel
+            </a>
+          </div>
         </div>
       </div>
     </section>
 
-    <section id="tokenomics">
-      <div class="grid">
-        <div class="card">
-          <div class="section-title">Tokenomics</div>
-          <div class="section-sub">Simple, transparent and built for the community.</div>
-          <ul class="tokenomics-list">
-            <li>Total Supply: <span class="mono-accent">TBD</span> $MNAD.</li>
-            <li>Liquidity: <span class="mono-accent">Locked</span> at launch.</li>
-            <li>Buy / Sell Tax: <span class="mono-accent">0% / 0%</span> (no friction, just flow).</li>
-            <li>Fair, community-first distribution. No secret presale.</li>
-          </ul>
-        </div>
-
-        <div class="card">
-          <div class="section-title">Roadmap – From Tree to Protocol</div>
-          <div class="section-sub">Not financial advice. Just pure evolution.</div>
-          <ul class="roadmap-list">
-            <li>Phase 1 – Stealth launch on MONAD, website & core community.</li>
-            <li>Phase 2 – Listings, charts & meme warfare across socials.</li>
-            <li>Phase 3 – Integrations, community tools, jungle utilities.</li>
-            <li>Phase 4 – Expand the Primate Protocol with experiments and spin-offs.</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-
-    <section id="community">
-      <div class="card">
-        <div class="section-title">Climb Into the Canopy</div>
-        <div class="section-sub">MONKEYNAD lives and dies by its community. No community, no jungle.</div>
-        <p style="margin-top: 10px;" >
-          Join the early primates shaping the culture of MONKEYNAD on MONAD. If you are here this early, consider
-          yourself part of the <span class="mono-accent">founding jungle</span>.
-        </p>
-        <div class="hero-cta" style="margin-top: 18px;">
-          <a class="btn btn-primary" id="buy" href="#">Buy $MNAD</a>
-          <a class="btn btn-secondary" href="#">Telegram</a>
-          <a class="btn btn-secondary" href="#">Twitter / X</a>
-        </div>
-      </div>
-    </section>
-
-    <div class="footer">
-      © 2025 MONKEYNAD · The Primate Protocol of MONAD · Made for degen entertainment only.
-    </div>
+    <!-- FOOTER -->
+    <footer>
+      <span>© <span id="year"></span> MONKEYNAD · The Primate Protocol of MONAD.</span>
+      <span>
+        Website currently in <strong>pre-launch</strong> mode. Nothing here is financial advice.
+      </span>
+    </footer>
   </div>
+
+  <script>
+    // Simple dynamic year in footer
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
