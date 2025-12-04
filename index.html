@@ -459,6 +459,71 @@
       color: var(--accent);
     }
 
+    /* CONTRACT SECTION */
+    .contract-box {
+      border-radius: var(--radius-xl);
+      background: rgba(7, 9, 25, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      padding: 16px 16px 14px;
+      font-size: 0.9rem;
+      color: var(--text-soft);
+      box-shadow: 0 0 24px rgba(0, 0, 0, 0.8);
+    }
+
+    .contract-address-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      margin: 10px 0;
+    }
+
+    .contract-address {
+      font-family: "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 0.78rem;
+      padding: 6px 8px;
+      border-radius: 8px;
+      background: rgba(4, 7, 22, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      word-break: break-all;
+    }
+
+    .copy-btn {
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 0.78rem;
+      border: 1px solid rgba(255, 255, 255, 0.24);
+      background: rgba(8, 11, 32, 0.9);
+      color: var(--text-main);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 0 14px rgba(0, 0, 0, 0.7);
+      transition: all 0.16s ease-out;
+    }
+
+    .copy-btn:hover {
+      border-color: rgba(255, 200, 87, 0.7);
+      color: var(--accent);
+      transform: translateY(-1px);
+    }
+
+    .contract-note {
+      font-size: 0.8rem;
+      opacity: 0.85;
+      margin-top: 6px;
+    }
+
+    .contract-note a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .contract-note a:hover {
+      text-decoration: underline;
+    }
+
     /* ROADMAP */
     .roadmap {
       border-radius: var(--radius-xl);
@@ -655,6 +720,11 @@
       .hero-tagline {
         font-size: 0.92rem;
       }
+
+      .contract-address-row {
+        flex-direction: column;
+        align-items: flex-start;
+      }
     }
   </style>
 </head>
@@ -676,6 +746,7 @@
       <div class="nav-links">
         <a href="#about">About</a>
         <a href="#tokenomics">Tokenomics</a>
+        <a href="#contract">Contract</a>
         <a href="#roadmap">Roadmap</a>
         <a href="#community">Community</a>
       </div>
@@ -715,6 +786,10 @@
           <a href="#how-to-buy" class="btn-pill btn-pill-accent">
             <span class="icon">🦧</span>
             Buy $MNAD <span>(soon)</span>
+          </a>
+          <a href="#contract" class="btn-pill">
+            <span class="icon">📜</span>
+            View contract
           </a>
           <a href="#community" class="btn-pill">
             <span class="icon">🌴</span>
@@ -823,10 +898,8 @@
       </p>
 
       <div class="tokenomics-grid">
-
         <!-- LEFT COLUMN -->
         <div class="tokenomics-list">
-
           <div class="token-row">
             <div class="token-row-label">
               <span class="token-row-badge"></span>
@@ -858,13 +931,11 @@
             </div>
             <span class="percent">5%</span>
           </div>
-
         </div>
 
         <!-- RIGHT COLUMN -->
         <div class="token-box">
           <strong>Token structure:</strong> maintaining your chosen total supply exactly as is.<br><br>
-
           The distribution model focuses on fairness, community strength and long-term flexibility:
           <ul style="margin-top: 6px; padding-left: 16px;">
             <li>80% – Liquidity &amp; market (open and accessible)</li>
@@ -872,11 +943,40 @@
             <li>5% – Team &amp; contributors (vested)</li>
             <li>5% – Treasury for experiments and future development</li>
           </ul>
-
           <br>
-          Final deployment details (contract, LP lock, vesting schedule) will be published before launch.
+          Final deployment details (LP lock, vesting schedule) will be published before launch.
         </div>
+      </div>
+    </section>
 
+    <!-- CONTRACT SECTION -->
+    <section id="contract">
+      <div class="section-label">Contract</div>
+      <h2 class="section-title">Official $MNAD contract</h2>
+      <p class="section-desc">
+        This is the <strong>only official MONKEYNAD contract address on MONAD</strong>.
+        Always verify this exact address before trading to avoid impostors and scams.
+      </p>
+
+      <div class="contract-box">
+        <p><strong>MONAD · $MNAD contract address</strong></p>
+        <div class="contract-address-row">
+          <code class="contract-address" id="mnad-contract">
+            0x48810d4895ca226c130b99395b37387413fbb91576a94da7fe6f60db6da7c758
+          </code>
+          <button class="copy-btn" type="button" onclick="copyContract()">
+            📋 Copy
+          </button>
+        </div>
+        <p class="contract-note">
+          Double-check that any contract you interact with matches this address exactly.
+          You can verify it directly on the explorer:
+          <a href="https://monadvision.com/tx/0x48810d4895ca226c130b99395b37387413fbb91576a94da7fe6f60db6da7c758?tab=Overview"
+             target="_blank"
+             rel="noopener noreferrer">
+            View on MonadVision
+          </a>.
+        </p>
       </div>
     </section>
 
@@ -990,7 +1090,25 @@
   </div>
 
   <script>
+    // Footer year
     document.getElementById("year").textContent = new Date().getFullYear();
+
+    // Copy contract helper
+    function copyContract() {
+      const addr = "0x48810d4895ca226c130b99395b37387413fbb91576a94da7fe6f60db6da7c758";
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(addr).then(() => {
+          const btn = document.querySelector(".copy-btn");
+          const original = btn.textContent;
+          btn.textContent = "✅ Copied";
+          setTimeout(() => { btn.textContent = original; }, 1600);
+        }).catch(() => {
+          window.prompt("Copy the contract address:", addr);
+        });
+      } else {
+        window.prompt("Copy the contract address:", addr);
+      }
+    }
   </script>
 </body>
 </html>
